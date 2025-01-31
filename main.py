@@ -1,5 +1,7 @@
 from room import Room
 from character import Enemy
+# Set player mortality status
+dead = False
 
 # Create rooms for the setting
 kitchen = Room("kitchen")
@@ -23,7 +25,7 @@ dave.weakness= "cheese"
 
 
 current_room = dining_hall
-while True:
+while dead == False:
       print("\n")
       current_room.get_details()
       inhabitant = current_room.get_character()
@@ -48,6 +50,10 @@ while True:
                   else:
                         # What happens if you lose?
                         print("Oh dear, you lost the fight.")
+                        dead = True
             else:
                   print("There is no one here to fight with")
 
+# Game over message
+if dead == True:
+      print("GAME OVER - YOU DIED - YOU LOSE")
