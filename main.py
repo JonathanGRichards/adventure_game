@@ -1,6 +1,7 @@
 from room import Room
 from character import Enemy, Friend
 from item import Item
+import time
 # Set player mortality status
 dead = False
 # Create an item 'sword'
@@ -53,8 +54,26 @@ butler.inventory = sword
 def is_item_in_inventory(item_name):
     return any(item.name == item_name for item in inventory)
 
-
+#Set Starter room
 current_room = kitchen
+
+#Welcome script
+time.sleep(1)
+username = input("What is your character name? ")
+print(f"Welcome to adventure {username}")
+time.sleep(1)
+print(f"You find yourself in the {current_room.name} of a strange house. Your goal is to find what treasures you can! ")
+time.sleep(4)
+print("You can type north, east, south or west to move around the rooms of house")
+time.sleep(4)
+print("If you run into a character you can talk to them, console them, or fight them")
+time.sleep(4)
+print("Type 'check inventory' to see what useful items you may have")
+time.sleep(4)
+print(f"Good luck {username}")
+time.sleep(1)
+
+#Gamplay loop
 while not dead:
       print("\n")
       current_room.get_details()
@@ -138,6 +157,6 @@ while not dead:
 
 # Game over message
 if dead == True:
-      print("GAME OVER - YOU DIED - YOU LOSE")
+      print(f"GAME OVER {username}- YOU DIED - YOU LOSE")
 else:
-      print("WELL DONE YOU COMPLETED THE GAME - YOU WIN")
+      print(f"WELL DONE {username} YOU COMPLETED THE GAME - YOU WIN")
