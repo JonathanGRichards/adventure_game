@@ -7,6 +7,8 @@ dead = False
 sword = Item("sword", "A sharp and shiny sword")
 # Create an item 'hug'
 hug = Item("hug", "A Warm and comforting hug")
+# Create an item 'key'
+key = Item("key", "A golden key with a skeleton on it")
 
 # Set player inventory
 inventory = [hug]
@@ -16,21 +18,28 @@ kitchen = Room("kitchen")
 kitchen.description = "A dank and dirty room buzzing with flies"
 ballroom = Room("ballroom")
 ballroom.description = "A vast room with a shiny wooden floor"
-dining_hall = Room("dining_room")
+dining_hall = Room("dining room")
 dining_hall.description = "A large room with ornate golden decorations"
+treasure_room = Room("treasure room")
+treasure_room.description = "A room filled with treasures beyond your wildest dreams"
+treasure_room.locked = True  # Lock the treasure room
 
 kitchen.link_room(dining_hall, "south")
 dining_hall.link_room(kitchen, "north")
 dining_hall.link_room(ballroom,"west")
 ballroom.link_room(dining_hall,"east")
+dining_hall.link_room(treasure_room, "east")
 
 
 # Add inhabitants to rooms
 
+# Create a zombie character
 dave = Enemy("Dave", "A smelly zombie")
 dining_hall.set_character(dave)
 dave.conversation = "Hi my name is Dave, Id like to eat your brain."
 dave.weakness= "sword"
+# Assign the item to the zombie
+dave.inventory = key
 
 # Create a butler character
 butler = Friend("Jeeves", "A helpful butler")
@@ -45,17 +54,31 @@ def is_item_in_inventory(item_name):
     return any(item.name == item_name for item in inventory)
 
 
-current_room = dining_hall
+current_room = kitchen
 while not dead:
       print("\n")
       current_room.get_details()
+      if current_room == treasure_room:
+            print("And then a skeleton popped out")
+            break
       inhabitant = current_room.get_character()
       if inhabitant is not None:
             inhabitant.describe()
       command = input("> ")
       # Check whether a direction was typed
       if command in ["north", "south", "east", "west"]:
-            current_room = current_room.move(command)
+            #Check if next rooms is locked
+            next_room = current_room.move(command)
+            if next_room.locked:
+                  print("The door is locked. You need a key to unlock it.")
+                  if is_item_in_inventory("key"):
+                        print("You use the key to unlock the door.")
+                        next_room.unlock()
+                        current_room = next_room
+                  else:
+                        print("You don't have the key.")
+            else:
+                  current_room = next_room
       elif command == "talk":
             if inhabitant is not None:
                   inhabitant.talk()
@@ -69,6 +92,10 @@ while not dead:
                   if inhabitant.fight(fight_with) == True and is_item_in_inventory(fight_with):
                         # What happens if you win?
                         print("Hooray, you won the fight!")
+                        # Add the enemy's inventory item to the player's inventory
+                        inventory.append(inhabitant.inventory)
+                        print(f"{inhabitant.name} dropped a {inhabitant.inventory.name}!")
+                        #Clear the ememy from the room
                         current_room.set_character(None)
                   else:
                         # What happens if you lose?
@@ -112,3 +139,5 @@ while not dead:
 # Game over message
 if dead == True:
       print("GAME OVER - YOU DIED - YOU LOSE")
+else:
+      print("WELL DONE YOU COMPLETED THE GAME - YOU WIN")

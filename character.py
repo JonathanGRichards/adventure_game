@@ -39,6 +39,7 @@ class Enemy(Character):
   def __init__(self, char_name, char_description):
     super().__init__(char_name, char_description)
     self._weakness = None
+    self._inventory = None
 
   @property
   def weakness(self):
@@ -46,6 +47,14 @@ class Enemy(Character):
   @weakness.setter
   def weakness(self, item_weakness):
     self._weakness = item_weakness
+  
+  @property
+  def inventory(self):
+    return self._inventory
+
+  @inventory.setter
+  def inventory(self, item_inventory):
+    self._inventory = item_inventory
 
   def fight(self, combat_item):
     if combat_item == self.weakness:
