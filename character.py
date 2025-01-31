@@ -9,7 +9,7 @@ class Character():
 # Describe this character​
 
   def describe(self):
-    print( self.name + " is here!")
+    print(f"{self.name} is here!")
     print( self.description)
 
   # Set what this character will say when talked to​
@@ -24,14 +24,14 @@ class Character():
 
   def talk(self):
     if self.conversation is not None:
-      print("[" + self.name + " says]: " + self.conversation)
+      print(f"[{self.name} says]:{self.conversation}")
     else:
-      print(self.name + " doesn't want to talk to you")
+      print(f"{self.name} doesn't want to talk to you")
 
   # Fight with this character​
 
   def fight(self, combat_item):
-    print(self.name + " doesn't want to fight with you")
+    print(f"{self.name} doesn't want to fight with you")
 
     return True
 
@@ -49,8 +49,38 @@ class Enemy(Character):
 
   def fight(self, combat_item):
     if combat_item == self.weakness:
-      print("You fend " + self.name + " off with the " + combat_item )
+      print(f"You fend {self.name} off with the {combat_item}")
       return True
     else:
-        print(self.name + " crushes you, puny adventurer")
+        print(f"{self.name} crushes you, puny adventurer")
         return False
+    
+class Friend(Character):
+  def __init__(self, char_name, char_description):
+    super().__init__(char_name, char_description)
+    self._strength = None
+    self._inventory = None
+
+  @property
+  def strength(self):
+    return self._strength
+  
+  @strength.setter
+  def strength(self, item_strength):
+    self._strength = item_strength
+
+  @property
+  def inventory(self):
+    return self._inventory
+
+  @inventory.setter
+  def inventory(self, item_inventory):
+    self._inventory = item_inventory
+
+  def console(self, action):
+    if action == self.strength:
+      print(f"You approach {self.name} and give them strength with a {action}")
+      return True
+    else:
+      print(f"{self.name} stares blankly into space...")
+      return

@@ -1,7 +1,7 @@
 class Item():
-  def __init__(self):
-    self._name = None
-    self._description = None
+  def __init__(self, name, description):
+    self._name = name
+    self._description = description
 
   @property 
   def name(self):
@@ -17,8 +17,8 @@ class Item():
      return self._description
 
   @description.setter
-  def set_description(self, item_description):
-    self._description = item_description
+  def set_description(self, description):
+    self._description = description
 
   def describe_item(self):
     print(self.description)
